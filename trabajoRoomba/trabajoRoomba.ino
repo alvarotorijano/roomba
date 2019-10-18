@@ -36,11 +36,7 @@
 
 #include <SoftwareSerial.h>
 // software serial #1: RX = digital pin 10, TX = digital pin 11
-SoftwareSerial port1(3, 4);
-
-typedef struct sensor {
-  
-}sensor_t;
+SoftwareSerial roombaPort(3, 4);
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -52,16 +48,8 @@ void setup() {
 }
 
 void loop() {
-  byte message[8] = {128, 130, 132, 137, 1, 255, 1, 255};
-  port1.write(message, 8);
-  
 
   // blank line to separate data from the two ports:
   //Serial.println();
 }
 
-void turn (int degre);
-
-void goForward(int mm);
-
-void readSensors(sensor_t roombaSensors);

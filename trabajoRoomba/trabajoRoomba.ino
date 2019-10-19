@@ -112,9 +112,6 @@ typedef struct sensors {
 	byte stasis;
 }sensorPack_t;
 
-typedef struct sensors sensorPack_t;
-
-
 #define TX_ROOMBA_PIN 4
 #define RX_ROOMBA_PIN 3
 

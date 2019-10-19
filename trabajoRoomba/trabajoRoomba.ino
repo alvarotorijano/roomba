@@ -34,16 +34,15 @@
 
  */
 
-#include <SoftwareSerial.h>
 // software serial #1: RX = digital pin 10, TX = digital pin 11
-SoftwareSerial roombaPort(3, 4);
+
 
 void setup() {
   // Open serial communications and wait for port to open:
   //Serial.begin(115200);
 
   // Start each software serial port
-  port1.begin(115200);
+
 
 }
 

@@ -16,13 +16,13 @@ private:
 public:
 	roomba(byte tx, byte rx);
 
-	void rommbaInit(void);
+	void rommbaInit();
 
 	void turn(int degre);
 
 	void goForward(int mm);
 
-	void readSensors(sensor_t roombaSensors);
+	void readSensors();
 
 };
 

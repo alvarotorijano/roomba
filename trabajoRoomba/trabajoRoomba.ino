@@ -134,11 +134,17 @@ void stopMoving() {
 }
 
 // Comienza el movimiento velocidad tiene que estar en -500 a 500 mm/s y el angulo entre -2000 y 2000 mm
-void drive(word velocity, word angle) {	
+void drive(word velocity, word angle) {
+	byte Hvelocity = velocity & 0xFF00;
+	byte Lvelocity = velocity & 0x00FF;
+
+	byte Hangle = angle & 0xFF00;
+	byte Langle = angle & 0x00FF;
+
 	byte data[5] = { 
 		137, // Comando de mover
-		velocity & 0x00FF, velocity & 0xFF00, // 2 bytes de velocidad
-		angle & 0x00FF, angle & 0xFF00 // 2 bytes de angulo
+		Hvelocity, Lvelocity, // 2 bytes de velocidad
+		Hangle, Langle // 2 bytes de angulo
 		};
 	myseruial.write(data, 5);
 }

@@ -44,7 +44,7 @@
 #include <LiquidCrystal_I2C.h>  // F Malpartida's NewLiquidCrystal library
 
 /*-----( Declare Constants )-----*/
-#define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa diseñada por MJKDZ
+#define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa diseï¿½ada por MJKDZ
 //definimos las constantes para esta placa
 
 #define USB_BAUDRATE 9600
@@ -133,7 +133,17 @@ void stopMoving() {
 	byte stop[5] = { 137, 0, 0, 0, 0 };
 }
 
-void turnDegree(int degree, bool direction){
+// Comienza el movimiento velocidad tiene que estar en -500 a 500 mm/s y el angulo entre -2000 y 2000 mm
+void drive(word velocity, word angle) {	
+	byte data[5] = { 
+		137, // Comando de mover
+		velocity & 0x00FF, velocity & 0xFF00, // 2 bytes de velocidad
+		angle & 0x00FF, angle & 0xFF00 // 2 bytes de angulo
+		};
+	myseruial.write(data, 5);
+}
+
+void turnDegree(int degree, bool direction) {
 	byte clockwise[5] = { 137, 0, 255, 255, 255 };
 	byte counterClockwise[5] = { 137, 0, 255, 0, 1 };
 	if (direction) {
@@ -144,7 +154,6 @@ void turnDegree(int degree, bool direction){
 	}
 	delay((degree / 360) * FULL_TURN_TIME);
 	stopMoving();
-	
 }
 
 int16_t readAngle() {
@@ -156,7 +165,7 @@ int16_t readAngle() {
 	}
 
 	MSB = myseruial.read();
-	LSB= myseruial.read();
+	LSB = myseruial.read();
 
 	return (int16_t(MSB << 8 | LSB));
 }
@@ -203,6 +212,8 @@ void setup() {
 void loop() {
 
   // blank line to separate data from the two ports:
-  //Serial.println();
+  // Serial.println();
+
+	delay(1);
 }
 

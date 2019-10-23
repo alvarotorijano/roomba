@@ -70,8 +70,8 @@ typedef struct sensors {
 	byte unused1;
 	byte irOpCode;
 	byte buttons;
-	int16_t distance;
-	int16_t angle;
+	int16_t distance;	//Acumulative 
+	int16_t angle;		//Acumulative 
 	byte chargingState;
 	int16_t voltage;
 	int16_t current;
@@ -94,8 +94,8 @@ typedef struct sensors {
 	int16_t radius;
 	int16_t velocityRight;
 	int16_t velocityLeft;
-	uint16_t encoderCountsLeft;
-	uint16_t encoderCountsRight;
+	uint16_t encoderCountsLeft;  //Acumulative 
+	uint16_t encoderCountsRight; //Acumulative 
 	byte lightBumper;
 	uint16_t lightBumpLeft;
 	uint16_t lightBumpfrontLeft;
@@ -120,12 +120,25 @@ typedef struct sensors {
 
 #define FULL_TURN_TIME 3303
 
+#define SENSOR_REFRESH_RATE 250
+
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
+void updateState(sensorPack_t reading, sensorPack_t * state) {
+	reading.encoderCountsLeft += state->encoderCountsLeft;
+	reading.encoderCountsRight += state->encoderCountsRight;
+	reading.distance += state->distance;
+	reading.angle += state->angle;
+	*state = reading;
+}
 
 void roombaInit(bool safe) {
-	byte start[3] = { 128, 130, 132 };
-	myseruial.write(start, 3);
+	byte start[2] = { 128, 132 };
+	if (safe) {
+		start[1] = 130;
+	}
+	
+	myseruial.write(start, 2);
 	readAngle();
 }
 
@@ -144,7 +157,6 @@ void turnDegree(int degree, bool direction){
 	}
 	delay((degree / 360) * FULL_TURN_TIME);
 	stopMoving();
-	
 }
 
 int16_t readAngle() {
@@ -197,10 +209,20 @@ void setup() {
 	lcd.print(readAngle());
   // Start each software serial port
 
-
+	
 }
 
 void loop() {
+
+	static long double last_sensor_reading = millis();
+	static sensorPack_t state;
+
+	if ((millis() - last_sensor_reading) > SENSOR_REFRESH_RATE) {
+		updateState(readSensors(), &state);
+	}
+	if (state.cliffFrontLeft || state.cliffFrontRight || state.cliffLeft || state.cliffRight) {
+		stopMoving();
+	}
 
   // blank line to separate data from the two ports:
   //Serial.println();

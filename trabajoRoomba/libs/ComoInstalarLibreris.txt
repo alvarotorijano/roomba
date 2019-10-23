@@ -1,0 +1,6 @@
+Copia las carpetas de las librearías en la ruta de instalación de Arduino, dentro de la carpetea libraries.
+Por ejemplo en windows en:
+C:\Program Files (x86)\Arduino\libraries
+
+Para crear la carpeta:
+C:\Program Files (x86)\Arduino\libraries\NewLiquidCrystal_lib

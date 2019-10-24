@@ -1,6 +1,6 @@
 
 #include "SerialUtils.hpp"
-#include "sensorPack_t.hpp"
+#include "../sensorPack_t.hpp"
 
 #if defined(ARDUINO) && ARDUINO >= 100
   #include "Arduino.h"
@@ -8,16 +8,17 @@
   #include "WProgram.h"
 #endif
 
-#include <SoftwareSerial.h>
-
+// Constructor 
 SerialUtils::SerialUtils(){
     SerialInitialized = true;
 }
 
+// Destructor
 SerialUtils::~SerialUtils() {
 
 }
 
+// Envias los datos de sensores por el puerto serie
 void SerialUtils::sendData(sensorPack_t sensors) {
 	if (!SerialInitialized) {
 		Serial.begin(9600); 

@@ -43,7 +43,7 @@
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>  // F Malpartida's NewLiquidCrystal library
 
-#include "SerialUtils.hpp"
+#include "SerialUtils/SerialUtils.hpp"
 
 /*-----( Declare Constants )-----*/
 #define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa dise�ada por MJKDZ

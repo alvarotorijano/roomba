@@ -68,6 +68,13 @@ void Roomba::turnLeft(int16_t velocity) {
 }
 
 /**
+ * Stops the Roomba in place.
+ */
+void Roomba::stop() {
+    drive(0, 0);
+}
+
+/**
  * Reads the angle the roomba has turned.
  * returns the angle.
  */

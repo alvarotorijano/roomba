@@ -43,6 +43,8 @@
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>  // F Malpartida's NewLiquidCrystal library
 
+#include "Roomba.hpp"
+
 /*-----( Declare Constants )-----*/
 #define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa dise�ada por MJKDZ
 //definimos las constantes para esta placa
@@ -70,8 +72,8 @@ typedef struct sensors {
 	byte unused1;
 	byte irOpCode;
 	byte buttons;
-	int16_t distance;	//Acumulative 
-	int16_t angle;		//Acumulative 
+	int16_t distance;	//Acumulative
+	int16_t angle;		//Acumulative
 	byte chargingState;
 	int16_t voltage;
 	int16_t current;
@@ -94,8 +96,8 @@ typedef struct sensors {
 	int16_t radius;
 	int16_t velocityRight;
 	int16_t velocityLeft;
-	uint16_t encoderCountsLeft;  //Acumulative 
-	uint16_t encoderCountsRight; //Acumulative 
+	uint16_t encoderCountsLeft;  //Acumulative
+	uint16_t encoderCountsRight; //Acumulative
 	byte lightBumper;
 	uint16_t lightBumpLeft;
 	uint16_t lightBumpfrontLeft;
@@ -137,7 +139,7 @@ void roombaInit(bool safe) {
 	if (safe) {
 		start[1] = 130;
 	}
-	
+
 	myseruial.write(start, 2);
 	readAngle();
 }
@@ -154,7 +156,7 @@ void drive(word velocity, word angle) {
 	byte Hangle = angle & 0xFF00;
 	byte Langle = angle & 0x00FF;
 
-	byte data[5] = { 
+	byte data[5] = {
 		137, // Comando de mover
 		Hvelocity, Lvelocity, // 2 bytes de velocidad
 		Hangle, Langle // 2 bytes de angulo
@@ -219,13 +221,13 @@ void setup() {
 	lcd.print(sizeof(sensorPack_t));
 
 	myseruial.begin(115200);
-	roombaInit(FULL);	
-	
+	roombaInit(FULL);
+
 	lcd.setCursor(0, 1);
 	lcd.print(readAngle());
   // Start each software serial port
 
-	
+
 }
 
 void loop() {
@@ -245,4 +247,3 @@ void loop() {
 
 	delay(1);
 }
-

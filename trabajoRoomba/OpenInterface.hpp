@@ -3,7 +3,7 @@
 /**
  * Roomba Open Interface Opcodes
  */
-enum class Opcodes {
+enum class Opcode {
     START = 128,
     BAUD = 129,
     CONTROL = 130,
@@ -38,7 +38,7 @@ enum class Opcodes {
 /**
  * Roomba Open Interface Packets
  */
-enum class Packets {
+enum class Packet {
     BUMPS_AND_WHEEL_DROPS = 7,
     WALL = 8,
     CLIFF_LEFT = 9,
@@ -90,13 +90,14 @@ enum class Packets {
     RIGHT_MOTOR_CURRENT = 55,
     MAIN_BRUSH_MOTOR_CURRENT = 56,
     SIDE_BRUSH_MOTOR_CURRENT = 57,
-    STASIS = 58
+    STASIS = 58,
+    LIGHT_BUMP_SIGNALS = 106
 };
 
 /**
  * Roomba Open Interface Charging States
  */
-enum class ChargingStates {
+enum class ChargingState {
     NOT_CHARGING = 0,
     REACONDITIONING_CHARGING = 1,
     FULL_CHARGING = 2,
@@ -104,3 +105,65 @@ enum class ChargingStates {
     WAITING = 4,
     CHARGING_FAULT_CONDITION = 5
 };
+
+enum class LightBumper {
+    LEFT = 0x01,
+    FRONT_LEFT = 0x02,
+    CENTER_LEFT = 0x04,
+    CENTER_RIGHT = 0x08,
+    FRONT_RIGHT = 0x10,
+    RIGHT = 0x20,
+};
+
+struct LightBumpSignals {
+    uint16_t left;
+    uint16_t frontLeft;
+    uint16_t centerLeft;
+    uint16_t centerRight;
+    uint16_t frontRight;
+    uint16_t right;
+};
+
+/**
+ * Returns Roomba Opcodes operands length in bytes
+ */
+/*int getOperandsLength(Opcode opcode) {
+    switch (opcode) {
+        case Opcode::BAUD:
+        case Opcode::MOTORS:
+        case Opcode::BUTTONS:
+        case Opcode::PLAY:
+        case Opcode::SENSORS:
+        case Opcode::RESUME_STREAM:
+            return 1;
+        case Opcode::SCHEDULING_LEDS:
+            return 2;
+        case Opcode::SET_TIME:
+        case Opcode::PWM_MOTORS:
+        case Opcode::LEDS:
+            return 3;
+        case Opcode::DRIVE:
+        case Opcode::DRIVE_DIRECT:
+        case Opcode::DRIVE_PWM:
+        case Opcode::DIGIT_LEDS_RAW:
+        case Opcode::DIGIT_LEDS_ASCII:
+            return 4;
+        case Opcode::SCHEDULE:
+            return 15;
+        case Opcode::SONG:
+            return -1;
+        case Opcode::QUERY_LIST:
+        case Opcode::STREAM:
+            return -2;
+        case Opcode::START:
+        case Opcode::SAFE:
+        case Opcode::CONTROL:
+        case Opcode::FULL:
+        case Opcode::CLEAN:
+        case Opcode::MAX:
+        case Opcode::SPOT:
+        case Opcode::SEEK_DOCK:
+        case Opcode::POWER:
+            return 0;
+    }
+}*/

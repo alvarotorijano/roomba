@@ -44,6 +44,7 @@
 #include <LiquidCrystal_I2C.h>  // F Malpartida's NewLiquidCrystal library
 
 #include "Roomba.hpp"
+#include "SerialUtils/SerialUtils.hpp"
 
 /*-----( Declare Constants )-----*/
 #define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa dise�ada por MJKDZ
@@ -59,6 +60,7 @@
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 int16_t angulo;
 
+<<<<<<< HEAD
 typedef struct sensors {
 	uint8_t bumpsWheelDrops;
 	byte wall;
@@ -113,6 +115,10 @@ typedef struct sensors {
 	int16_t sideBrushCurrent;
 	byte stasis;
 }sensorPack_t;
+=======
+#include "sensorPack_t.hpp"
+
+>>>>>>> 6a7ca344e17743ee86874fea92a9819f506da4b1
 
 #define TX_ROOMBA_PIN 4
 #define RX_ROOMBA_PIN 3

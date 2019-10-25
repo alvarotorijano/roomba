@@ -173,12 +173,58 @@ void readSensors(sensorPack_t* data) {
   }
 */
 
+void pruebaAvances() {
+	lcd.print("caminando 3 segundos: ");
+	delay(1000);
+
+
+	drive(-25, 0);
+	delay(3000);
+	stopMoving();
+	
+	lcd.setCursor(0, 0);
+	lcd.print("Leyendo sensores");
+	sensorPack_t s = readSensors();
+	lcd.setCursor(0, 1);
+
+	for (int i = 100 - 1; i >= 0; i--)
+	{
+		switch (i % 2)
+		{
+			case 0:
+				lcd.setCursor(0, 0);
+				lcd.print("Distancia");
+				lcd.setCursor(0, 1);
+				lcd.print(s.distance);
+			break;
+			
+			case 1:
+				lcd.setCursor(0, 0);
+				lcd.print("Angulo");
+				lcd.setCursor(0, 1);
+				lcd.print(s.angle);
+			break;
+		
+			default:
+			break;
+		}
+		delay(3000);
+		lcd.clear();
+	}
+	
+	delay(300000);
+
+}
+
 // Función de Arduino que se ejecuta solo una vez al inicio.
 void setup() {
 	static sensorPack_t state;
 	// Open serial communications and wait for port to open:
 	Serial.begin(USB_BAUDRATE);
 	myseruial.begin(115200);
+
+	roombaInit(FULL);
+	stopMoving();
 
 	Serial.println("Leonidas bot");
 	lcd.begin(16, 2); // inicializar lcd
@@ -193,7 +239,6 @@ void setup() {
 	lcd.print("  Leonidas Bot");
 	delay(500);
 
-	roombaInit(FULL);
 	delay(100);
 	//turnDegree(360, true);
 	lcd.clear();
@@ -203,16 +248,11 @@ void setup() {
 	state = readSensors(); //reset senswor readings
 	//showSensors(state);
 
+	// pruebaAvances();
+
 	lcd.clear();
 	lcd.setCursor(0, 0);
 	lcd.print("Buscando: ");
-	delay(2000);
-	//byte clockwise[5] = { 137, 0, 25, 255, 255 };
-	//myseruial.write(clockwise, 5);
-	//delay(5000);
-	//drive(25, 0xffff);
-	//delay(5000);
- 
 }
 
 // Envían por el puerto serie la información de los bumpers
@@ -255,7 +295,6 @@ void loop() {
 	}
 
 	if ((millis() - last_lcd_update) > SENSOR_REFRESH_RATE) {
-
 		lcd.setCursor(0, 1);
 		lcd.print("                ");
 		lcd.setCursor(0, 1);

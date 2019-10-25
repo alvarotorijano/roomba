@@ -1,7 +1,7 @@
 #ifndef SERIAL_UTILS
 #define SERIAL_UTILS
 
-#include "../sensorPack_t.hpp"
+#include "../OpenInterface/GroupPackets/Sensors.hpp"
 
 #if defined(ARDUINO) && ARDUINO >= 100
   #include "Arduino.h"
@@ -25,7 +25,7 @@ public:
     ~SerialUtils();
 
     // Envias los datos de sensores por el puerto serie
-    void sendData(sensorPack_t sensors);
+    void sendData(Sensors &sensors);
 };
 
 

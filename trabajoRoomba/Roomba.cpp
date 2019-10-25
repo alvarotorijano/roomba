@@ -1,5 +1,9 @@
 #include "Roomba.hpp"
 
+#include <math.h>
+
+#define FULL_TURN_TIME 3033
+
 /**
  * Roomba constructor.
  * _serial: SoftwareSerial object.
@@ -44,4 +48,36 @@ void Roomba::drive(int16_t velocity, int16_t radius)
     memcpy(operands, &velocity, 2);
     memcpy(operands + 2, &radius, 2);
     send(Opcode::DRIVE, operands, 4);
+}
+
+/**
+ * Makes the Roomba turn.
+ * angle: The angle to turn in radians.
+ * velocity: The velocity of the turn.
+ */
+void Roomba::turn(float angle, int16_t velocity) {
+    if (angle < 0) {
+        angle = -angle;
+        this->turnLeft(velocity);
+    } else {
+        this->turnRight(velocity);
+    }
+    delay((angle / (2.0 * PI)) * (FULL_TURN_TIME * 255.0 / velocity));
+    stop();
+}
+
+/**
+ * Makes the Roomba turn.
+ * angle: The angle to turn in degrees.
+ * velocity: The velocity of the turn.
+ */
+void Roomba::turnDegree(float angle, int16_t velocity) {
+    if (angle < 0) {
+        angle = -angle;
+        this->turnLeft(velocity);
+    } else {
+        this->turnRight(velocity);
+    }
+    delay((angle / 360.0) * (FULL_TURN_TIME * 255.0 / velocity));
+    stop();
 }

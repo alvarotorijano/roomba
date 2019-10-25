@@ -30,12 +30,9 @@
 #define SAFE true
 #define FULL false
 
-// Tiempo en milisegundos a máxima velocidad que tarda en dar 360º (una vuelta completa)
-#define FULL_TURN_TIME 3303
+#define FULL_TURN_TIME 3033
 
-// Cada cuántos milisegundos se actualizan los sensores 
-#define SENSOR_REFRESH_RATE 250
-
+#define SENSOR_REFRESH_RATE 100
 
 //mjkdz i2c LCD board
 //                        addr, en,rw,rs,d4,d5,d6,d7,bl, blpol
@@ -47,10 +44,17 @@ int16_t angulo;
 // Simulación de puerto serie con los pines conectados al Arduino
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
+void play() {
+	byte a[21] = { 140, 1, 9, 55, 32, 55, 32, 55, 32, 51, 24, 58, 8, 55, 32, 51, 24, 58, 8, 55, 64 };
+	byte aa[2] = { 141, 1 };
+	myseruial.write(a, 21);
+	myseruial.write(aa, 2);
 
+}
 
 // Actualiza los valores de los contadores totales son los proporcionados por Roomba
 // para mantener un totalizado de movimientos y giros realizados.
+
 void updateState(sensorPack_t reading, sensorPack_t* state) {
 
 	//! Se está escribiendo en reading los alores de state, cuando debería escribirse en state los valores del reading
@@ -104,14 +108,16 @@ void turnDegree(
 	) {
 	byte clockwise[5] = { 137, 0, 255, 255, 255 };
 	byte counterClockwise[5] = { 137, 0, 255, 0, 1 };
+	stopMoving();
 	if (direction) {
 		myseruial.write(clockwise, 5);
 	}
 	else {
 		myseruial.write(counterClockwise, 5);
 	}
-	delay((degree / 360) * FULL_TURN_TIME);
+	delay(700);
 	stopMoving();
+	delay(3000);
 }
 
 // Lee el alguno que roomba cree que ha girado desde la última lectura del angulo, empieza en 0.
@@ -153,8 +159,8 @@ sensorPack_t readSensors() {
 
 
 	memcpy(&reading, buffert, i);
-	Serial.print("Estos son mis bytes: ");
-	Serial.print(i);
+	//Serial.print("Estos son mis bytes: ");
+	//Serial.print(i);
 	return reading;
 }
 
@@ -216,9 +222,11 @@ void pruebaAvances() {
 
 }
 
+sensorPack_t state;
+
 // Función de Arduino que se ejecuta solo una vez al inicio.
 void setup() {
-	static sensorPack_t state;
+
 	// Open serial communications and wait for port to open:
 	Serial.begin(USB_BAUDRATE);
 	myseruial.begin(115200);
@@ -237,9 +245,11 @@ void setup() {
 	delay(500);
 	lcd.setCursor(0, 0);
 	lcd.print("  Leonidas Bot");
-	delay(500);
+
+	memset(&state, 0, sizeof(sensorPack_t));
 
 	delay(100);
+	play();
 	//turnDegree(360, true);
 	lcd.clear();
 	lcd.setCursor(0, 0);
@@ -253,6 +263,8 @@ void setup() {
 	lcd.clear();
 	lcd.setCursor(0, 0);
 	lcd.print("Buscando: ");
+	delay(2000);
+
 }
 
 // Envían por el puerto serie la información de los bumpers
@@ -332,22 +344,23 @@ void loop() {
 		}
 
 		myseruial.write(clockwise, 5);
-		delay(2000);
+		//delay(2000);
 		phase = SEEK;
 		updated = false;
 		break;
 
 	case SEEK:
 		if (!updated) {
+			//lcd.clear();
 			lcd.setCursor(0, 0);
-			lcd.print("SEEK         ");
+			lcd.print("SEEK            ");
 			updated = !updated;
 		}
 		if (state.lightBumpRight > DETECTION_THRESHOLD) {
 			stopMoving();
 			lcd.setCursor(0, 0);
 			lcd.print("Found");
-			delay(5000);
+			delay(3000);
 			phase = FACE;
 			updated = false;
 		}
@@ -356,10 +369,13 @@ void loop() {
 	case FACE:
 		if (!updated) {
 			lcd.clear();
-			lcd.print("Face");
+			lcd.print("Face            ");
+			Serial.println("Objetivo encontrado!");
 			updated = !updated;
+			delay(3000);
 		}
-		turnDegree(60, false);
+		Serial.print("Encarando objetivo");
+		turnDegree(60, true);
 		phase = PUSH;
 		updated = false;
 		break;

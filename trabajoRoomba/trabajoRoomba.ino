@@ -1,47 +1,10 @@
-/*
-  Software serial multple serial test
 
-  Receives from the two software serial ports,
-  sends to the hardware serial port.
-
-  In order to listen on a software port, you call port.listen().
-  When using two software serial ports, you have to switch ports
-  by listen()ing on each one in turn. Pick a logical time to switch
-  ports, like the end of an expected transmission, or when the
-  buffer is empty. This example switches ports when there is nothing
-  more to read from a port
-
-  The circuit:
-  Two devices which communicate serially are needed.
-   First serial device's TX attached to digital pin 10(RX), RX to pin 11(TX)
-   Second serial device's TX attached to digital pin 8(RX), RX to pin 9(TX)
-
-  Note:
-  Not all pins on the Mega and Mega 2560 support change interrupts,
-  so only the following can be used for RX:
-  10, 11, 12, 13, 50, 51, 52, 53, 62, 63, 64, 65, 66, 67, 68, 69
-
-  Not all pins on the Leonardo support change interrupts,
-  so only the following can be used for RX:
-  8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
-
-  created 18 Apr. 2011
-  modified 19 March 2016
-  by Tom Igoe
-  based on Mikal Hart's twoPortRXExample
-
-  This example code is in the public domain.
-
-*/
-
-// software serial #1: RX = digital pin 10, TX = digital pin 11
-
-
+// Amplicamos el tamaño de buffer de SoftwareSerial 
 #define _SS_MAX_RX_BUFF 90 // RX buffer size
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
-#include <LCD.h><z
+#include <LCD.h>
 #include <LiquidCrystal_I2C.h>  // F Malpartida's NewLiquidCrystal library
 
 #include "Roomba.hpp"
@@ -49,14 +12,17 @@
 #include "sensorPack_t.hpp"
 
 /*-----( Declare Constants )-----*/
-#define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa dise�ada por MJKDZ
+// Direccion I2C para PCF8574A (pantalla LCD)
+#define I2C_ADDR    0x27
 //definimos las constantes para esta placa
 
+// Velocidad de 
 #define USB_BAUDRATE 9600
 
 #define  LED_OFF  0
 #define  LED_ON  1
 
+// Pines conectados al arduino para simular un puerto serie conectado al ROOMBA
 #define TX_ROOMBA_PIN 4
 #define RX_ROOMBA_PIN 3
 #define DETECTION_THRESHOLD 15000
@@ -69,10 +35,13 @@
 #define SENSOR_REFRESH_RATE 100
 
 //mjkdz i2c LCD board
-//                   addr, en,rw,rs,d4,d5,d6,d7,bl, blpol
-LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+//                        addr, en,rw,rs,d4,d5,d6,d7,bl, blpol
+LiquidCrystal_I2C lcd(I2C_ADDR, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+
+// Variable no usada por ahora
 int16_t angulo;
 
+// Simulación de puerto serie con los pines conectados al Arduino
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
 void play() {
@@ -82,7 +51,15 @@ void play() {
 	myseruial.write(aa, 2);
 
 }
+
+// Actualiza los valores de los contadores totales son los proporcionados por Roomba
+// para mantener un totalizado de movimientos y giros realizados.
+
 void updateState(sensorPack_t reading, sensorPack_t* state) {
+
+	//! Se está escribiendo en reading los alores de state, cuando debería escribirse en state los valores del reading
+	// TODO Aquí hay que meter la lógica de almacenar la posición e ir calcuando la posición (x, y) actual; para poder volver al la posición inicial
+
 	reading.encoderCountsLeft += state->encoderCountsLeft;
 	reading.encoderCountsRight += state->encoderCountsRight;
 	reading.distance += state->distance;
@@ -90,6 +67,7 @@ void updateState(sensorPack_t reading, sensorPack_t* state) {
 	*state = reading;
 }
 
+// Inicial la conexión con Roomba en modo FULL por ahora.
 void roombaInit(bool safe) {
 	byte start[3] = { 128, 130, 132 };
 	/*
@@ -100,21 +78,21 @@ void roombaInit(bool safe) {
 	myseruial.write(start, 3);
 }
 
+// Detiene el movimiento
 void stopMoving() {
 	byte stop[5] = { 137, 0, 0, 0, 0 };
 	myseruial.write(stop, 5);
 }
 
 // Comienza el movimiento velocidad tiene que estar en -500 a 500 mm/s y el angulo entre -2000 y 2000 mm
-void drive(uint16_t velocity, uint16_t angle) {
-	byte Hvelocity = velocity & 0xFF00;
+void drive(int16_t velocity, int16_t angle) {
+	byte Hvelocity = (velocity >> 8) & 0x00FF;
 	byte Lvelocity = velocity & 0x00FF;
 
-	byte Hangle = angle & 0xFF00;
+	byte Hangle = (angle >> 8) & 0x00FF;
 	byte Langle = angle & 0x00FF;
 
 	byte data[5] = {
-
 	  137, // Comando de mover
 	  Hvelocity, Lvelocity, // 2 bytes de velocidad
 	  Hangle, Langle // 2 bytes de angulo
@@ -123,7 +101,11 @@ void drive(uint16_t velocity, uint16_t angle) {
 	myseruial.write(data, 5);
 }
 
-void turnDegree(int degree, bool direction) {
+// Gira el robot sobre su propio eje a máxima velocidad y espera a que termina
+void turnDegree(
+	int degree, // Grados en los que girar
+	bool direction // dirección, true para que gire en el sentido de las agujas del robot
+	) {
 	byte clockwise[5] = { 137, 0, 255, 255, 255 };
 	byte counterClockwise[5] = { 137, 0, 255, 0, 1 };
 	stopMoving();
@@ -138,6 +120,7 @@ void turnDegree(int degree, bool direction) {
 	delay(3000);
 }
 
+// Lee el alguno que roomba cree que ha girado desde la última lectura del angulo, empieza en 0.
 int16_t readAngle() {
 	byte angleRead[2] = { 142, 20 };
 	byte MSB, LSB;
@@ -152,6 +135,7 @@ int16_t readAngle() {
 	return (int16_t(MSB << 8 | LSB));
 }
 
+// lee todos los sensores y los devuelve en forma de estructura.
 sensorPack_t readSensors() {
 	sensorPack_t reading;
 	byte readSensorPack6[2] = { 142, 6 };
@@ -180,6 +164,8 @@ sensorPack_t readSensors() {
 	return reading;
 }
 
+// Lectura de sensores a tracés de un puntero de memoria recibido.
+// el punto debe apuntar a una zona de memoria reservada con el tamaño del struct.
 void readSensors(sensorPack_t* data) {
 	(*data) = readSensors();
 }
@@ -205,8 +191,16 @@ void setup() {
 	lcd.begin(16, 2); // inicializar lcd
 	lcd.clear();
 	lcd.setCursor(0, 0);
+	lcd.print("Leonidas Bot  ");
+	delay(500);
+	lcd.setCursor(0, 0);
+	lcd.print(" Leonidas Bot ");
+	delay(500);
+	lcd.setCursor(0, 0);
 	lcd.print("  Leonidas Bot");
+
 	memset(&state, 0, sizeof(sensorPack_t));
+
 	roombaInit(FULL);
 	delay(100);
 	play();
@@ -230,25 +224,32 @@ void setup() {
 
 }
 
+// Envían por el puerto serie la información de los bumpers
 void showIr(sensorPack_t state) {
-	myseruial.println("lightBumpLeft: ");
-	myseruial.print(state.lightBumpLeft);
-	myseruial.println("lightBumpfrontLeft: ");
-	myseruial.print(state.lightBumpfrontLeft);
-	myseruial.println("lightBumpCenterLeft: ");
-	myseruial.print(state.lightBumpCenterLeft);
-	myseruial.println("lightBumpCenterRight: ");
-	myseruial.print(state.lightBumpCenterRight);
-	myseruial.println("lightBumpfrontRight: ");
-	myseruial.print(state.lightBumpfrontRight);
-	myseruial.println("lightBumpRight: ");
-	myseruial.print(state.lightBumpRight);
+	Serial.println("lightBumpLeft: ");
+	Serial.print(state.lightBumpLeft);
+	Serial.println("lightBumpfrontLeft: ");
+	Serial.print(state.lightBumpfrontLeft);
+	Serial.println("lightBumpCenterLeft: ");
+	Serial.print(state.lightBumpCenterLeft);
+	Serial.println("lightBumpCenterRight: ");
+	Serial.print(state.lightBumpCenterRight);
+	Serial.println("lightBumpfrontRight: ");
+	Serial.print(state.lightBumpfrontRight);
+	Serial.println("lightBumpRight: ");
+	Serial.print(state.lightBumpRight);
 }
 
+// Enumeración con los estados que tiene la máquina de estados
 enum strategy {
-	START = 0, SEEK, FACE, PUSH, CENTER
+	START = 0, // Comienzo 
+	SEEK,  // Búsqueda de objetivo
+	FACE,  // Orientación del roomba
+	PUSH,  // Empuje de la botella fuera de la mesa
+	CENTER // Reubicación del robo la posición inicial // TODO Cambiar por volver a la posición inicial
 };
 
+// Bucle infinito de ejecución de Arduino
 void loop() {
 	static bool updated = false;
 	byte clockwise[5] = { 137, 0, 25, 255, 255 };
@@ -276,6 +277,19 @@ void loop() {
 		stopMoving();
 		lcd.clear();
 		lcd.print("Que me caigo!");
+		lcd.setCursor(0, 1);
+		if (state.cliffFrontLeft) {
+			lcd.print("cliffFrontLeft");
+		}
+		if (state.cliffFrontRight) {
+			lcd.print("cliffFrontRight");
+		}
+		if (state.cliffLeft) {
+			lcd.print("cliffLeft");
+		}
+		if (state.cliffRight) {
+			lcd.print("cliffRight");
+		}
 		while (1);
 	}
 
@@ -336,7 +350,5 @@ void loop() {
 
 	}
 
-
 	delay(1);
-
 }

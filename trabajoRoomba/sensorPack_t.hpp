@@ -19,10 +19,10 @@ typedef struct sensors {
 	byte overcurrents;
 	byte dirtDetect;
 	byte unused1;
-	byte irOpCode;
+	byte irOpcode;
 	byte buttons;
-	int16_t distance;	//Acumulative 
-	int16_t angle;		//Acumulative 
+	int16_t distance;	//Acumulative
+	int16_t angle;		//Acumulative
 	byte chargingState;
 	int16_t voltage;
 	int16_t current;
@@ -45,8 +45,8 @@ typedef struct sensors {
 	int16_t radius;
 	int16_t velocityRight;
 	int16_t velocityLeft;
-	uint16_t encoderCountsLeft;  //Acumulative 
-	uint16_t encoderCountsRight; //Acumulative 
+	uint16_t encoderCountsLeft;  //Acumulative
+	uint16_t encoderCountsRight; //Acumulative
 	byte lightBumper;
 	uint16_t lightBumpLeft;
 	uint16_t lightBumpfrontLeft;

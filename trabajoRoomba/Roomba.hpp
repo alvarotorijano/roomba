@@ -2,7 +2,9 @@
 
 #include <SoftwareSerial.h>
 
-#include "OpenInterface.hpp"
+#include "OpenInterface/Opcode.hpp"
+#include "OpenInterface/Sensor.hpp"
+#include "OpenInterface/GroupPackets/LightBumpSignalSensors.hpp"
 
 #if defined(ARDUINO) && ARDUINO >= 100
     #include "Arduino.h"
@@ -48,11 +50,49 @@ public:
 
 
     /**
+     * Reads the value of a sensor.
+     * sensor: Sensor to query.
+     */
+    template <class T>
+    T querySensor(Sensor sensor) {
+        T output;
+        querySensor<T>(sensor, &output);
+        return output;
+    }
+
+    /**
+     * Reads the value of a sensor.
+     * sensor: Sensor to query.
+     * output: Output reference.
+     */
+    template <class T>
+    void querySensor(Sensor sensor, T &output)
+    {
+        byte operand = (byte)sensor;
+        send(Opcode::SENSORS, &operand, 1);
+        read(sizeof(T), &output);
+    }
+
+    /**
+     * Reads the value of a sensor.
+     * sensor: Sensor to query.
+     * output: Output pointer.
+     */
+    template <class T>
+    void querySensor(Sensor sensor, T *output) {
+        byte operand = (byte)sensor;
+        send(Opcode::SENSORS, &operand, 1);
+        read(sizeof(T), output);
+    }
+
+
+
+    /**
      * Makes the Roomba drive at the specified velocity with the specified radius.
      * velocity: Velocity of the movement.
      * radius: Radius of the movement.
      */
-    void drive(int16_t velocity, int16_t radius);
+    inline void drive(int16_t velocity, int16_t radius);
 
     /**
      * Makes the Roomba drive at the specified velocity.
@@ -83,13 +123,17 @@ public:
      * Reads the angle the roomba has turned.
      * returns the angle.
      */
-    int16_t readAngle();
+    inline int16_t readAngle() {
+        return querySensor<int16_t>(Sensor::ANGLE);
+    }
 
     /**
      * Reads the distance the roomba has moved.
      * returns the distance.
      */
-    int16_t readDistance();
+    inline int16_t readDistance() {
+        return querySensor<int16_t>(Sensor::DISTANCE);
+    }
 
 
 
@@ -98,47 +142,98 @@ public:
      * returns a bit map with the values (use enum LightBumper to access the
      * fields)
      */
-    uint8_t readLightBumper();
+    inline uint8_t readLightBumper() {
+        return querySensor<uint8_t>(Sensor::LIGHT_BUMPER);
+    }
 
     /**
      * Reads the left light bump signal.
      * returns the signal.
      */
-    uint16_t readLightBumpLeftSignal();
+    inline uint16_t readLightBumpLeftSignal() {
+        return querySensor<uint16_t>(Sensor::LIGHT_BUMP_LEFT_SIGNAL);
+    }
 
     /**
      * Reads the front left light bump signal.
      * returns the signal.
      */
-    uint16_t readLightBumpFrontLeftSignal();
+    inline uint16_t readLightBumpFrontLeftSignal() {
+        return querySensor<uint16_t>(Sensor::LIGHT_BUMP_FRONT_LEFT_SIGNAL);
+    }
 
     /**
      * Reads the center left light bump signal.
      * returns the signal.
      */
-    uint16_t readLightBumpCenterLeftSignal();
+    inline uint16_t readLightBumpCenterLeftSignal() {
+        return querySensor<uint16_t>(Sensor::LIGHT_BUMP_CENTER_LEFT_SIGNAL);
+    }
 
     /**
      * Reads the center right light bump signal.
      * returns the signal.
      */
-    uint16_t readLightBumpCenterRightSignal();
+    inline uint16_t readLightBumpCenterRightSignal() {
+        return querySensor<uint16_t>(Sensor::LIGHT_BUMP_CENTER_RIGHT_SIGNAL);
+    }
 
     /**
      * Reads the front right light bump signal.
      * returns the signal.
      */
-    uint16_t readLightBumpFrontRightSignal();
+    inline uint16_t readLightBumpFrontRightSignal() {
+        return querySensor<uint16_t>(Sensor::LIGHT_BUMP_FRONT_RIGHT_SIGNAL);
+    }
 
     /**
      * Reads the right light bump signal.
      * returns the signal.
      */
-    uint16_t readLightBumpRightSignal();
+    inline uint16_t readLightBumpRightSignal() {
+        return querySensor<uint16_t>(Sensor::LIGHT_BUMP_RIGHT_SIGNAL);
+    }
 
     /**
      * Reads the light bump signals.
      * output: the signals.
      */
-    void readLightBumpSignals(LightBumpSignals &output);
+    inline void readLightBumpSignals(LightBumpSignalSensors &output) {
+        querySensor<LightBumpSignalSensors>(Sensor::LIGHT_BUMP_SIGNALS);
+    }
+
+
+
+    /**
+     * Is left cliff sensor triggered?
+     * returns 0 if it is, 1 if it isn't.
+     */
+    inline uint8_t getCliffLeft() {
+        return querySensor<uint8_t>(Sensor::CLIFF_LEFT);
+    }
+
+    /**
+     * Is front left cliff sensor triggered?
+     * returns 0 if it is, 1 if it isn't.
+     */
+    inline uint8_t getCliffFrontLeft() {
+        return querySensor<uint8_t>(Sensor::CLIFF_FRONT_LEFT);
+    }
+
+    /**
+     * Is front right cliff sensor triggered?
+     * returns 0 if it is, 1 if it isn't.
+     */
+    inline uint8_t getCliffFrontRight() {
+        return querySensor<uint8_t>(Sensor::CLIFF_FRONT_RIGHT);
+    }
+
+    /**
+     * Is right cliff sensor triggered?
+     * returns 0 if it is, 1 if it isn't.
+     */
+    inline uint8_t getCliffRight() {
+        return querySensor<uint8_t>(Sensor::CLIFF_RIGHT);
+    }
+
 };

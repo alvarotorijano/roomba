@@ -17,7 +17,9 @@ Roomba::Roomba(SoftwareSerial &_serial)
  */
 void Roomba::send(Opcode opcode, byte *operands, size_t length) {
     serial.write((byte)opcode);
-    serial.write(operands, length);
+    if (operands && length) {
+        serial.write(operands, length);
+    }
 }
 
 /**
@@ -42,35 +44,4 @@ void Roomba::drive(int16_t velocity, int16_t radius)
     memcpy(operands, &velocity, 2);
     memcpy(operands + 2, &radius, 2);
     send(Opcode::DRIVE, operands, 4);
-}
-
-/**
- * Makes the Roomba drive at the specified velocity.
- * velocity: Velocity of the movement.
- */
-void Roomba::driveStraight(int16_t velocity) {
-    drive(velocity, STRAIGHT);
-}
-
-/**
- * Makes the Roomba turn right at the specified velocity.
- * velocity: Velocity of the movement.
- */
-void Roomba::turnRight(int16_t velocity) {
-    drive(velocity, CLOCKWISE);
-}
-
-/**
- * Makes the Roomba turn left at the specified velocity.
- * velocity: Velocity of the movement.
- */
-void Roomba::turnLeft(int16_t velocity) {
-    drive(velocity, COUNTER_CLOCKWISE);
-}
-
-/**
- * Stops the Roomba in place.
- */
-void Roomba::stop() {
-    drive(0, 0);
 }

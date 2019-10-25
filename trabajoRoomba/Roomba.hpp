@@ -41,6 +41,14 @@ public:
     void send(Opcode opcode, byte *operands, size_t length);
 
     /**
+     * Sends an opcode without operands to the Roomba.
+     * opcode: Operation code.
+     */
+    inline void send(Opcode opcode) {
+        send(opcode, nullptr, 0);
+    }
+
+    /**
      * Reads output from the roomba.
      * length: Length of the data to read, in bytes.
      * output: Pointer to the memory to write.
@@ -88,36 +96,72 @@ public:
 
 
     /**
+     * Boots the Roomba.
+     */
+    inline void start()
+    {
+        send(Opcode::START);
+    }
+
+    /**
+     * Sets Roomba mode to safe.
+     */
+    inline void setSafeMode()
+    {
+        send(Opcode::SAFE);
+    }
+
+    /**
+     * Sets Roomba mode to full.
+     */
+    inline void setFullMode()
+    {
+        send(Opcode::FULL);
+    }
+
+
+
+    /**
      * Makes the Roomba drive at the specified velocity with the specified radius.
      * velocity: Velocity of the movement.
      * radius: Radius of the movement.
      */
-    inline void drive(int16_t velocity, int16_t radius);
+    void drive(int16_t velocity, int16_t radius);
 
     /**
      * Makes the Roomba drive at the specified velocity.
      * velocity: Velocity of the movement.
      */
-    void driveStraight(int16_t velocity);
+    inline void driveStraight(int16_t velocity)
+    {
+        drive(velocity, STRAIGHT);
+    }
 
     /**
      * Makes the Roomba turn right at the specified velocity.
      * velocity: Velocity of the movement.
      */
-    void turnRight(int16_t velocity);
+    inline void turnRight(int16_t velocity)
+    {
+        drive(velocity, CLOCKWISE);
+    }
 
     /**
      * Makes the Roomba turn left at the specified velocity.
      * velocity: Velocity of the movement.
      */
-    void turnLeft(int16_t velocity);
+    inline void turnLeft(int16_t velocity)
+    {
+        drive(velocity, COUNTER_CLOCKWISE);
+    }
 
     /**
      * Stops the Roomba in place.
      */
-    void stop();
-
-
+    inline void stop()
+    {
+        drive(0, 0);
+    }
 
     /**
      * Reads the angle the roomba has turned.

@@ -64,9 +64,9 @@
 #define SAFE true
 #define FULL false
 
-#define FULL_TURN_TIME 3303
+#define FULL_TURN_TIME 3033
 
-#define SENSOR_REFRESH_RATE 250
+#define SENSOR_REFRESH_RATE 100
 
 //mjkdz i2c LCD board
 //                   addr, en,rw,rs,d4,d5,d6,d7,bl, blpol
@@ -75,6 +75,13 @@ int16_t angulo;
 
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
+void play() {
+	byte a[21] = { 140, 1, 9, 55, 32, 55, 32, 55, 32, 51, 24, 58, 8, 55, 32, 51, 24, 58, 8, 55, 64 };
+	byte aa[2] = { 141, 1 };
+	myseruial.write(a, 21);
+	myseruial.write(aa, 2);
+
+}
 void updateState(sensorPack_t reading, sensorPack_t* state) {
 	reading.encoderCountsLeft += state->encoderCountsLeft;
 	reading.encoderCountsRight += state->encoderCountsRight;
@@ -119,14 +126,16 @@ void drive(uint16_t velocity, uint16_t angle) {
 void turnDegree(int degree, bool direction) {
 	byte clockwise[5] = { 137, 0, 255, 255, 255 };
 	byte counterClockwise[5] = { 137, 0, 255, 0, 1 };
+	stopMoving();
 	if (direction) {
 		myseruial.write(clockwise, 5);
 	}
 	else {
 		myseruial.write(counterClockwise, 5);
 	}
-	delay((degree / 360) * FULL_TURN_TIME);
+	delay(700);
 	stopMoving();
+	delay(3000);
 }
 
 int16_t readAngle() {
@@ -166,8 +175,8 @@ sensorPack_t readSensors() {
 
 
 	memcpy(&reading, buffert, i);
-	Serial.print("Estos son mis bytes: ");
-	Serial.print(i);
+	//Serial.print("Estos son mis bytes: ");
+	//Serial.print(i);
 	return reading;
 }
 
@@ -184,8 +193,10 @@ void readSensors(sensorPack_t* data) {
   }
 */
 
+sensorPack_t state;
+
 void setup() {
-	static sensorPack_t state;
+
 	// Open serial communications and wait for port to open:
 	Serial.begin(USB_BAUDRATE);
 	myseruial.begin(115200);
@@ -195,9 +206,10 @@ void setup() {
 	lcd.clear();
 	lcd.setCursor(0, 0);
 	lcd.print("  Leonidas Bot");
-
+	memset(&state, 0, sizeof(sensorPack_t));
 	roombaInit(FULL);
 	delay(100);
+	play();
 	//turnDegree(360, true);
 	lcd.clear();
 	lcd.setCursor(0, 0);
@@ -215,7 +227,7 @@ void setup() {
 	//delay(5000);
 	//drive(25, 0xffff);
 	//delay(5000);
- 
+
 }
 
 void showIr(sensorPack_t state) {
@@ -276,22 +288,23 @@ void loop() {
 		}
 
 		myseruial.write(clockwise, 5);
-		delay(2000);
+		//delay(2000);
 		phase = SEEK;
 		updated = false;
 		break;
 
 	case SEEK:
 		if (!updated) {
+			//lcd.clear();
 			lcd.setCursor(0, 0);
-			lcd.print("SEEK         ");
+			lcd.print("SEEK            ");
 			updated = !updated;
 		}
 		if (state.lightBumpRight > DETECTION_THRESHOLD) {
 			stopMoving();
 			lcd.setCursor(0, 0);
 			lcd.print("Found");
-			delay(5000);
+			delay(3000);
 			phase = FACE;
 			updated = false;
 		}
@@ -300,10 +313,13 @@ void loop() {
 	case FACE:
 		if (!updated) {
 			lcd.clear();
-			lcd.print("Face");
+			lcd.print("Face            ");
+			Serial.println("Objetivo encontrado!");
 			updated = !updated;
+			delay(3000);
 		}
-		turnDegree(60, false);
+		Serial.print("Encarando objetivo");
+		turnDegree(60, true);
 		phase = PUSH;
 		updated = false;
 		break;
@@ -320,7 +336,7 @@ void loop() {
 
 	}
 
-	
+
 	delay(1);
 
 }

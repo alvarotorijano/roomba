@@ -99,12 +99,12 @@ void stopMoving() {
 }
 
 // Comienza el movimiento velocidad tiene que estar en -500 a 500 mm/s y el angulo entre -2000 y 2000 mm
-void drive(uint16_t velocity, uint16_t angle) {
-	byte Hvelocity = velocity & 0xFF00;
-	byte Lvelocity = (velocity >> 8) & 0x00FF;
+void drive(int16_t velocity, int16_t angle) {
+	byte Hvelocity = (velocity >> 8) & 0x00FF;
+	byte Lvelocity = velocity & 0x00FF;
 
-	byte Hangle = angle & 0xFF00;
-	byte Langle = (angle >> 8) & 0x00FF;
+	byte Hangle = (angle >> 8) & 0x00FF;
+	byte Langle = angle & 0x00FF;
 
 	byte data[5] = {
 	  137, // Comando de mover

@@ -268,6 +268,19 @@ void loop() {
 		stopMoving();
 		lcd.clear();
 		lcd.print("Que me caigo!");
+		lcd.setCursor(0, 1);
+		if (state.cliffFrontLeft) {
+			lcd.print("cliffFrontLeft");
+		}
+		if (state.cliffFrontRight) {
+			lcd.print("cliffFrontRight");
+		}
+		if (state.cliffLeft) {
+			lcd.print("cliffLeft");
+		}
+		if (state.cliffRight) {
+			lcd.print("cliffRight");
+		}
 		while (1);
 	}
 
@@ -324,7 +337,5 @@ void loop() {
 
 	}
 
-	
 	delay(1);
-
 }

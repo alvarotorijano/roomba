@@ -180,12 +180,12 @@ void readSensors(sensorPack_t* data) {
 */
 
 void pruebaAvances() {
-	lcd.print("caminando 3 segundos: ");
+	lcd.print("caminando 10 segundos: ");
 	delay(1000);
 
 
-	drive(-25, 0);
-	delay(3000);
+	drive(25, 100);
+	delay(10000);
 	stopMoving();
 	
 	lcd.setCursor(0, 0);
@@ -193,9 +193,9 @@ void pruebaAvances() {
 	sensorPack_t s = readSensors();
 	lcd.setCursor(0, 1);
 
-	for (int i = 100 - 1; i >= 0; i--)
+	for (int i = 200 - 1; i >= 0; i--)
 	{
-		switch (i % 2)
+		switch (i % 4)
 		{
 			case 0:
 				lcd.setCursor(0, 0);
@@ -210,15 +210,30 @@ void pruebaAvances() {
 				lcd.setCursor(0, 1);
 				lcd.print(s.angle);
 			break;
+			
+			case 2:
+				lcd.setCursor(0, 0);
+				lcd.print("encoderCountsLeft");
+				lcd.setCursor(0, 1);
+				lcd.print(s.encoderCountsLeft);
+			break;
+			
+			case 3:
+				lcd.setCursor(0, 0);
+				lcd.print("encoderCountsRight");
+				lcd.setCursor(0, 1);
+				lcd.print(s.encoderCountsRight);
+			break;
 		
 			default:
 			break;
 		}
-		delay(3000);
+		delay(20000);
 		lcd.clear();
 	}
 	
 	delay(300000);
+	delay(3000000);
 
 }
 

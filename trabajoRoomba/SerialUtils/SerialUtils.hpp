@@ -18,7 +18,7 @@ private:
     bool SerialInitialized;
 
 public:
-    // Contrunctor
+    // Construnctor
     SerialUtils();
 
     // Destructor

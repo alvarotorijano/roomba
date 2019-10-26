@@ -10,10 +10,17 @@
 
 // Constructor 
 Odometry::Odometry() {
-
+  positionX = 0;
+  positionY = 0;
+  angle = 0;
 }
 
 // Destructor
 Odometry::~Odometry() {
 
+}
+
+
+Odometry::update(sensorPack_t sensor) {
+  // TODO gestionar lógica
 }

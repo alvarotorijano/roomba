@@ -13,13 +13,25 @@
 class Odometry
 {
 private:
-  
+
 public:
-    // Contrunctor
+    // Posición en X desde el punto inicial
+    double positionX;
+
+    // Posición en Y (perpendicular a X) desde el punto inicial
+    double positionY;
+
+    // Ángulo en grados que indica cuánto se ha girado desde el inicio
+    double angle;
+
+
+    // Construnctor
     Odometry();
 
     // Destructor
     ~Odometry();
+
+    update(sensorPack_t sensor);
 
 };
 

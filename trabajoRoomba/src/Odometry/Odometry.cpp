@@ -3,6 +3,8 @@
 
 #include "Odometry.hpp"
 
+#define UNITS_ROOMBA_360_DEGREES 0
+
 // Constructor 
 Odometry::Odometry() {
   positionX = 0;
@@ -37,9 +39,9 @@ double Odometry::degreesToRadians(double degrees) {
 
 
 double Odometry::roombaAngleToDegrees(double angle) {
-  return 0; // TODO
+  return angle * (360.0 / (double)UNITS_ROOMBA_360_DEGREES );
 }
 
 double Odometry::degreesToRoombaAngle(double degrees) {
-  return 0; // TODO
+  return angle * ((double)UNITS_ROOMBA_360_DEGREES / 360);
 }

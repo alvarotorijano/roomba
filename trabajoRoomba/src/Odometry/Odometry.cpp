@@ -3,7 +3,7 @@
 
 #include "Odometry.hpp"
 
-#define UNITS_ROOMBA_360_DEGREES 0
+#define UNITS_ROOMBA_360_DEGREES 31900
 
 // Constructor 
 Odometry::Odometry() {
@@ -19,13 +19,15 @@ Odometry::~Odometry() {
 
 // Actualiza los datos internos de la posición a través de los sensores de Roomba
 void Odometry::update(sensorPack_t sensor) {
-  angle += sensor.angle;
+  angle += roombaAngleToDegrees(sensor.angle);
+  angle = fmod(angle, 360);
+  while (angle < 0) {
+    angle += 360.0;
+  }
 
   positionX += sensor.distance * cos(degreesToRadians(roombaAngleToDegrees(angle)));
   positionY += sensor.distance * sin(degreesToRadians(roombaAngleToDegrees(angle)));
 }
-
-
 
 
 

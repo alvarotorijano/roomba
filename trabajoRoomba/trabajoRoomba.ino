@@ -10,7 +10,6 @@
 #include "Roomba.hpp"
 #include "SerialUtils/SerialUtils.hpp"
 #include "sensorPack_t.hpp"
-#include "./src/Odometry/Odometry.hpp"
 
 /*-----( Declare Constants )-----*/
 // Direccion I2C para PCF8574A (pantalla LCD)
@@ -44,9 +43,6 @@ LiquidCrystal_I2C lcd(I2C_ADDR, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 // Variable no usada por ahora
 int16_t angulo;
 
-// Sistema para gestionar la odometría
-Odometry odometry;
-
 // Simulación de puerto serie con los pines conectados al Arduino
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
@@ -58,6 +54,9 @@ void play() {
 
 }
 
+float positionX = 0;
+float positionY = 0;
+float angle = 0;
 
 // Actualiza los valores de los contadores totales son los proporcionados por Roomba
 // para mantener un totalizado de movimientos y giros realizados.
@@ -65,8 +64,6 @@ void updateState(sensorPack_t reading, sensorPack_t* state) {
 
 	//! Se está escribiendo en reading los alores de state, cuando debería escribirse en state los valores del reading
 	// TODO Aquí hay que meter la lógica de almacenar la posición e ir calcuando la posición (x, y) actual; para poder volver al la posición inicial
-
-	odometry.update(reading);
 
 	reading.encoderCountsLeft += state->encoderCountsLeft;
 	reading.encoderCountsRight += state->encoderCountsRight;
@@ -187,12 +184,12 @@ void readSensors(sensorPack_t* data) {
   }
 */
 
-void pruebaAvances() {
+void pruebaAvances() {  
 	lcd.print("caminando 10 segundos: ");
 	delay(1000);
 
 
-	drive(25, 100);
+	drive(25, 1);
 	delay(10000);
 	stopMoving();
 	
@@ -249,7 +246,6 @@ sensorPack_t state;
 
 // Función de Arduino que se ejecuta solo una vez al inicio.
 void setup() {
-
 	// Open serial communications and wait for port to open:
 	Serial.begin(USB_BAUDRATE);
 	myseruial.begin(115200);
@@ -422,4 +418,21 @@ void loop() {
 	}
 
 	delay(1);
+}
+
+
+
+// Actualiza la pantalla con datos de odometría
+void updateLCDwithOdometry() {
+	lcd.clear();
+	lcd.print("X");
+	lcd.print(odometry.positionX); 
+	
+	lcd.print("Y");
+	lcd.print(odometry.positionY);
+
+	lcd.setCursor(0, 1);
+
+	lcd.print(odometry.angle);
+	lcd.print("º");
 }

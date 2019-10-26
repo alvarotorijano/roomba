@@ -10,7 +10,7 @@
 #include "Roomba.hpp"
 #include "SerialUtils/SerialUtils.hpp"
 #include "sensorPack_t.hpp"
-#include "Odometry/Odometry.hpp"
+#include "./src/Odometry/Odometry.hpp"
 
 /*-----( Declare Constants )-----*/
 // Direccion I2C para PCF8574A (pantalla LCD)
@@ -44,6 +44,9 @@ LiquidCrystal_I2C lcd(I2C_ADDR, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 // Variable no usada por ahora
 int16_t angulo;
 
+// Sistema para gestionar la odometría
+Odometry odo;
+
 // Simulación de puerto serie con los pines conectados al Arduino
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
@@ -55,8 +58,6 @@ void play() {
 
 }
 
-// Sistema para gestionar la odometría
-Odometry odometry;
 
 // Actualiza los valores de los contadores totales son los proporcionados por Roomba
 // para mantener un totalizado de movimientos y giros realizados.
@@ -65,7 +66,7 @@ void updateState(sensorPack_t reading, sensorPack_t* state) {
 	//! Se está escribiendo en reading los alores de state, cuando debería escribirse en state los valores del reading
 	// TODO Aquí hay que meter la lógica de almacenar la posición e ir calcuando la posición (x, y) actual; para poder volver al la posición inicial
 
-	odometry.update(reading);
+	// odometry.update(reading);
 
 	reading.encoderCountsLeft += state->encoderCountsLeft;
 	reading.encoderCountsRight += state->encoderCountsRight;

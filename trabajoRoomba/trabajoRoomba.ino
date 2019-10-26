@@ -49,6 +49,8 @@ SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
 Odometry odometry;
 
+sensorPack_t state;
+
 void play() {
 	byte a[21] = { 140, 1, 9, 55, 32, 55, 32, 55, 32, 51, 24, 58, 8, 55, 32, 51, 24, 58, 8, 55, 64 };
 	byte aa[2] = { 141, 1 };
@@ -60,6 +62,8 @@ void play() {
 // Actualiza los valores de los contadores totales son los proporcionados por Roomba
 // para mantener un totalizado de movimientos y giros realizados.
 void updateState(sensorPack_t reading, sensorPack_t* state) {
+
+	odometry.update(reading);
 
 	//! Se está escribiendo en reading los alores de state, cuando debería escribirse en state los valores del reading
 	// TODO Aquí hay que meter la lógica de almacenar la posición e ir calcuando la posición (x, y) actual; para poder volver al la posición inicial
@@ -86,6 +90,8 @@ void roombaInit(bool safe) {
 void stopMoving() {
 	byte stop[5] = { 137, 0, 0, 0, 0 };
 	myseruial.write(stop, 5);
+
+	updateState(readSensors(), &state);
 }
 
 // Comienza el movimiento velocidad tiene que estar en -500 a 500 mm/s y el angulo entre -2000 y 2000 mm
@@ -246,7 +252,7 @@ void pruebaAvances() {
 
 }
 
-sensorPack_t state;
+
 
 // Función de Arduino que se ejecuta solo una vez al inicio.
 void setup() {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 /**
  * Reply packet for a Sensor::GROUP_2 read.
  */

@@ -6,6 +6,7 @@
 #include "OpenInterface/Sensor.hpp"
 #include "OpenInterface/GroupPackets/LightBumpSignalSensors.hpp"
 #include "OpenInterface/GroupPackets/CliffSensors.hpp"
+#include "OpenInterface/GroupPackets/PositionSensors.hpp"
 
 #if defined(ARDUINO) && ARDUINO >= 100
     #include "Arduino.h"
@@ -13,7 +14,7 @@
     #include "WProgram.h"
 #endif
 
-#define STRAIGHT 0x8000
+#define STRAIGHT 0x7FFF
 #define CLOCKWISE 0xFFFF
 #define COUNTER_CLOCKWISE 0x0001
 
@@ -39,7 +40,7 @@ public:
      * operands: Array of operand bytes.
      * length: Length in bytes of the array of operands.
      */
-    void send(Opcode opcode, byte *operands, size_t length);
+    void send(Opcode opcode, uint8_t *operands, size_t length);
 
     /**
      * Sends an opcode without operands to the Roomba.
@@ -72,25 +73,13 @@ public:
     /**
      * Reads the value of a sensor.
      * sensor: Sensor to query.
-     * output: Output reference.
-     */
-    template <class T>
-    void querySensor(Sensor sensor, T &output)
-    {
-        byte operand = (byte)sensor;
-        send(Opcode::SENSORS, &operand, 1);
-        read(sizeof(T), &output);
-    }
-
-    /**
-     * Reads the value of a sensor.
-     * sensor: Sensor to query.
      * output: Output pointer.
      */
     template <class T>
     void querySensor(Sensor sensor, T *output) {
         byte operand = (byte)sensor;
         send(Opcode::SENSORS, &operand, 1);
+        delay(50);
         read(sizeof(T), output);
     }
 
@@ -178,6 +167,8 @@ public:
         drive(0, 0);
     }
 
+
+
     /**
      * Reads the angle the roomba has turned.
      * returns the angle.
@@ -192,6 +183,14 @@ public:
      */
     inline int16_t getDistance() {
         return querySensor<int16_t>(Sensor::DISTANCE);
+    }
+
+    /**
+     * Reads the encoders of the roomba.
+     * returns the encoders.
+     */
+    inline void getPositionSensors(PositionSensors *output) {
+        return querySensor<PositionSensors>(Sensor::POSITION, output);
     }
 
 
@@ -257,7 +256,7 @@ public:
      * Reads the light bump signals.
      * output: the signals.
      */
-    inline void getLightBumpSignals(LightBumpSignalSensors &output) {
+    inline void getLightBumpSignals(LightBumpSignalSensors *output) {
         querySensor<LightBumpSignalSensors>(Sensor::LIGHT_BUMP_SIGNALS);
     }
 
@@ -299,7 +298,7 @@ public:
      * Reads all cliff sensors.
      * output: the sensor values.
      */
-    inline void getCliffs(CliffSensors &output) {
+    inline void getCliffs(CliffSensors *output) {
         querySensor<CliffSensors>(Sensor::CLIFFS, output);
     }
 

@@ -19,9 +19,9 @@ Roomba::Roomba(SoftwareSerial &_serial)
  * operands: Array of operand bytes.
  * length: Length in bytes of the array of operands.
  */
-void Roomba::send(Opcode opcode, byte *operands, size_t length) {
-    serial.write((byte)opcode);
-    if (operands && length) {
+void Roomba::send(Opcode opcode, uint8_t *operands, size_t length) {
+    serial.write((uint8_t)opcode);
+    if (operands != nullptr && length > 0) {
         serial.write(operands, length);
     }
 }
@@ -44,9 +44,11 @@ void Roomba::read(size_t length, void *output) {
  */
 void Roomba::drive(int16_t velocity, int16_t radius)
 {
-    byte operands[4];
-    memcpy(operands, &velocity, 2);
-    memcpy(operands + 2, &radius, 2);
+    uint8_t operands[4];
+    operands[0] = (0xFF00 & velocity) >> 8;
+    operands[1] = 0x00FF & velocity;
+    operands[2] = (0xFF00 & radius) >> 8;
+    operands[3] = 0x00FF & radius;
     send(Opcode::DRIVE, operands, 4);
 }
 
@@ -62,7 +64,7 @@ void Roomba::turn(float angle, int16_t velocity) {
     } else {
         this->turnRight(velocity);
     }
-    delay((angle / (2.0 * PI)) * (FULL_TURN_TIME * 255.0 / velocity));
+    delay((angle / (2.0 * PI)) * (FULL_TURN_TIME));
     stop();
 }
 
@@ -78,6 +80,6 @@ void Roomba::turnDegree(float angle, int16_t velocity) {
     } else {
         this->turnRight(velocity);
     }
-    delay((angle / 360.0) * (FULL_TURN_TIME * 255.0 / velocity));
+    delay((angle / 360.0) * (FULL_TURN_TIME));
     stop();
 }

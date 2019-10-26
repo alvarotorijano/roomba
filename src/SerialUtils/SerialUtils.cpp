@@ -26,7 +26,7 @@ void SerialUtils::sendData(Sensors &sensors) {
 
 	Serial.println("START");
     Serial.print("bumpsWheelDrops: "); // uint8_t
-    Serial.println(sensors.bumpsWheelDrops);
+    Serial.println(sensors.bumpsWheeldrops);
     Serial.print("wall: "); // byte
     Serial.println(sensors.wall);
     Serial.print("cliffLeft: "); // byte
@@ -46,7 +46,7 @@ void SerialUtils::sendData(Sensors &sensors) {
     Serial.print("unused1: "); // byte
     Serial.println(sensors.unused1);
     Serial.print("irOpCode: "); // byte
-    Serial.println(sensors.irOpCode);
+    Serial.println(sensors.irOpcode);
     Serial.print("buttons: "); // byte
     Serial.println(sensors.buttons);
     Serial.print("distance;: "); // int16_t
@@ -88,7 +88,7 @@ void SerialUtils::sendData(Sensors &sensors) {
     Serial.print("songPlaying: "); // byte
     Serial.println(sensors.songPlaying);
     Serial.print("OIStreamNumPackets: "); // byte
-    Serial.println(sensors.OIStreamNumPackets);
+    Serial.println(sensors.oiStreamNumPackets);
     Serial.print("velocity: "); // int16_t
     Serial.println(sensors.velocity);
     Serial.print("radius: "); // int16_t
@@ -106,19 +106,19 @@ void SerialUtils::sendData(Sensors &sensors) {
     Serial.print("lightBumpLeft: "); // uint16_t
     Serial.println(sensors.lightBumpLeft);
     Serial.print("lightBumpfrontLeft: "); // uint16_t
-    Serial.println(sensors.lightBumpfrontLeft);
+    Serial.println(sensors.lightBumpFrontLeft);
     Serial.print("lightBumpCenterLeft: "); // uint16_t
     Serial.println(sensors.lightBumpCenterLeft);
     Serial.print("lightBumpCenterRight: "); // uint16_t
     Serial.println(sensors.lightBumpCenterRight);
     Serial.print("lightBumpfrontRight: "); // uint16_t
-    Serial.println(sensors.lightBumpfrontRight);
+    Serial.println(sensors.lightBumpFrontRight);
     Serial.print("lightBumpRight: "); // uint16_t
     Serial.println(sensors.lightBumpRight);
     Serial.print("irOPCodeLeft: "); // byte
-    Serial.println(sensors.irOPCodeLeft);
+    Serial.println(sensors.irOpcodeLeft);
     Serial.print("irOPCodeRight: "); // byte
-    Serial.println(sensors.irOPCodeRight);
+    Serial.println(sensors.irOpcodeRight);
     Serial.print("leftMotorCurrent: "); // int16_t
     Serial.println(sensors.leftMotorCurrent);
     Serial.print("rightMotorCurrent: "); // int16_t

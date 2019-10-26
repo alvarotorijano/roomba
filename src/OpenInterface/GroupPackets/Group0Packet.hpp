@@ -1,9 +1,11 @@
 #pragma once
 
+#include <stdint.h>
+
 /**
- * Reply packet for a Sensor::GROUP_6 read.
+ * Reply packet for a Sensor::GROUP_0 read.
  */
-struct Group6Packet
+struct Group0Packet
 {
     uint8_t bumpsWheeldrops;
     uint8_t wall;
@@ -25,20 +27,4 @@ struct Group6Packet
     int8_t temperature;
     uint16_t batteryCharge;
     uint16_t batteryCapacity;
-    uint16_t wallSignal;
-    uint16_t cliffLeftSignal;
-    uint16_t cliffFrontLeftSignal;
-    uint16_t cliffFrontRightSignal;
-    uint16_t cliffRightSignal;
-    uint8_t unused2;
-    uint16_t unused3;
-    uint8_t chargerAvailable;
-    uint8_t openInterfaceMode;
-    uint8_t songNumber;
-    uint8_t songPlaying;
-    uint8_t oiStreamNumPackets;
-    int16_t velocity;
-    int16_t radius;
-    int16_t velocityRight;
-    int16_t velocityLeft;
 };

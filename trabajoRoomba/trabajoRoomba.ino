@@ -10,6 +10,7 @@
 #include "Roomba.hpp"
 #include "SerialUtils/SerialUtils.hpp"
 #include "sensorPack_t.hpp"
+#include "Odometry/Odometry.hpp"
 
 /*-----( Declare Constants )-----*/
 // Direccion I2C para PCF8574A (pantalla LCD)

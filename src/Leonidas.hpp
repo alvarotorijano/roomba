@@ -3,7 +3,9 @@
 #include "Bot.hpp"
 #include "Leonidas.hpp"
 
+#include "State/FaceState.hpp"
 #include "State/SeekState.hpp"
+#include "State/PushState.hpp"
 
 #include <LiquidCrystal_I2C.h>
 
@@ -12,7 +14,20 @@
  */
 class Leonidas : public Bot {
 public:
+    /**
+     * Searching state.
+     */
     SeekState seek;
+
+    /**
+     * Facing state.
+     */
+    FaceState face;
+
+    /**
+     * Facing state.
+     */
+    PushState push;
 
     /**
      * Leonidas constructor.

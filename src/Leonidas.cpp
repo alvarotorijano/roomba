@@ -1,7 +1,8 @@
 #include "Leonidas.hpp"
 
 Leonidas::Leonidas(SoftwareSerial &serial, LiquidCrystal_I2C &lcd)
-    : Bot(serial, lcd), seek(this)
+    : Bot(serial, lcd), seek(SeekState(this)), face(FaceState(this)),
+    push(PushState(this))
 {
 }
 
@@ -22,6 +23,7 @@ void Leonidas::start() {
     // Limpia los sensores de posición.
     PositionSensors positionSensors;
     roomba.getPositionSensors(&positionSensors);
+    setState(&seek);
 }
 
 void Leonidas::update(unsigned long delta) {

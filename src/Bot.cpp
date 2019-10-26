@@ -3,15 +3,15 @@
 #include "State/IddleState.hpp"
 
 Bot::Bot(SoftwareSerial &serial, LiquidCrystal_I2C &_lcd)
-    : iddle(this), state(iddle), roomba(Roomba(serial)), lcd(_lcd)
+    : iddle(IddleState(this)), state(&iddle), roomba(Roomba(serial)), lcd(_lcd)
 {
-    state.enter();
+    state->enter();
 }
 
-void Bot::setState(State &newState) {
-    state.exit();
+void Bot::setState(State *newState) {
+    state->exit();
     state = newState;
-    state.enter();
+    state->enter();
 }
 
 /**
@@ -24,7 +24,7 @@ void Bot::start() {}
  * delta: Time delta.
  */
 void Bot::update(unsigned long delta) {
-    state.update(delta);
+    state->update(delta);
 }
 
 /**

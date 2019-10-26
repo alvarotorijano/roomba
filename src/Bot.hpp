@@ -16,7 +16,7 @@ private:
     /**
      * State of the bot.
      */
-    State &state;
+    State *state;
 
 public:
     /**
@@ -43,13 +43,13 @@ public:
      * Sets the state.
      * newState: Nuevo estado.
      */
-    void setState(State &newState);
+    void setState(State *newState);
 
     /**
      * Gets the state.
      * returns the current state.
      */
-    inline State &getState() {
+    inline State *getState() {
         return state;
     }
 

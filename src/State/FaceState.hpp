@@ -3,20 +3,15 @@
 #include "State.hpp"
 
 /**
- * Finds an object.
+ * Faces an object.
  */
-class SeekState : public State {
-private:
-    /**
-     * Object detections.
-     */
-    int detections;
+class FaceState : public State {
 public:
     /**
      * State constructor.
      * bot: Bot.
      */
-    SeekState(Bot *bot);
+    FaceState(Bot *bot);
 
     /**
      * Called when the state is entered.

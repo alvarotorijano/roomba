@@ -10,6 +10,7 @@
 #include "Roomba.hpp"
 #include "SerialUtils/SerialUtils.hpp"
 #include "sensorPack_t.hpp"
+#include "src/Odometry/Odometry.hpp"
 
 /*-----( Declare Constants )-----*/
 // Direccion I2C para PCF8574A (pantalla LCD)
@@ -46,6 +47,8 @@ int16_t angulo;
 // Simulación de puerto serie con los pines conectados al Arduino
 SoftwareSerial myseruial(TX_ROOMBA_PIN, RX_ROOMBA_PIN);
 
+Odometry odometry;
+
 void play() {
 	byte a[21] = { 140, 1, 9, 55, 32, 55, 32, 55, 32, 51, 24, 58, 8, 55, 32, 51, 24, 58, 8, 55, 64 };
 	byte aa[2] = { 141, 1 };
@@ -53,10 +56,6 @@ void play() {
 	myseruial.write(aa, 2);
 
 }
-
-float positionX = 0;
-float positionY = 0;
-float angle = 0;
 
 // Actualiza los valores de los contadores totales son los proporcionados por Roomba
 // para mantener un totalizado de movimientos y giros realizados.
@@ -189,9 +188,10 @@ void pruebaAvances() {
 	delay(1000);
 
 
-	drive(25, 1);
+	drive(50, 1);
 	delay(10000);
 	stopMoving();
+
 	
 	lcd.setCursor(0, 0);
 	lcd.print("Leyendo sensores");
@@ -200,7 +200,7 @@ void pruebaAvances() {
 
 	for (int i = 200 - 1; i >= 0; i--)
 	{
-		switch (i % 4)
+		switch (i % 6)
 		{
 			case 0:
 				lcd.setCursor(0, 0);
@@ -229,6 +229,10 @@ void pruebaAvances() {
 				lcd.setCursor(0, 1);
 				lcd.print(s.encoderCountsRight);
 			break;
+
+			case 4:
+			case 5:
+				updateLCDwithOdometry();
 		
 			default:
 			break;

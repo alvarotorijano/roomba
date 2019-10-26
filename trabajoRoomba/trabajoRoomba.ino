@@ -19,13 +19,15 @@
 // Velocidad de 
 #define USB_BAUDRATE 9600
 
+#define DETECTIONS 3
+
 #define  LED_OFF  0
 #define  LED_ON  1
 
 // Pines conectados al arduino para simular un puerto serie conectado al ROOMBA
 #define TX_ROOMBA_PIN 4
 #define RX_ROOMBA_PIN 3
-#define DETECTION_THRESHOLD 15000
+#define DETECTION_THRESHOLD 12000
 
 #define SAFE true
 #define FULL false
@@ -115,9 +117,9 @@ void turnDegree(
 	else {
 		myseruial.write(counterClockwise, 5);
 	}
-	delay(700);
+	delay(3033 - 350);
 	stopMoving();
-	delay(3000);
+	delay(1000);
 }
 
 // Lee el alguno que roomba cree que ha girado desde la última lectura del angulo, empieza en 0.
@@ -256,6 +258,8 @@ void loop() {
 	static enum strategy phase = START;
 	static long double last_sensor_reading = millis(), last_lcd_update = millis();
 	static sensorPack_t state;
+	static byte detections = 0;
+
 	int i;
 
 	if ((millis() - last_sensor_reading) > SENSOR_REFRESH_RATE) {
@@ -264,7 +268,6 @@ void loop() {
 	}
 
 	if ((millis() - last_lcd_update) > SENSOR_REFRESH_RATE) {
-
 		lcd.setCursor(0, 1);
 		lcd.print("                ");
 		lcd.setCursor(0, 1);
@@ -314,11 +317,15 @@ void loop() {
 			lcd.print("SEEK            ");
 			updated = !updated;
 		}
-		if (state.lightBumpRight > DETECTION_THRESHOLD) {
+		if (state.lightBumpLeft > DETECTION_THRESHOLD) {
+			detections++;
+		}
+		
+		if (detections == DETECTIONS){
 			stopMoving();
 			lcd.setCursor(0, 0);
 			lcd.print("Found");
-			delay(3000);
+			delay(1000);
 			phase = FACE;
 			updated = false;
 		}
@@ -330,7 +337,7 @@ void loop() {
 			lcd.print("Face            ");
 			Serial.println("Objetivo encontrado!");
 			updated = !updated;
-			delay(3000);
+			delay(1000);
 		}
 		Serial.print("Encarando objetivo");
 		turnDegree(60, true);
@@ -345,7 +352,7 @@ void loop() {
 			updated = !updated;
 		}
 		drive(25, 0);
-		delay(2000);
+		///delay(2000);
 		break;
 
 	}

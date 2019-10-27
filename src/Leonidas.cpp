@@ -4,12 +4,13 @@
 
 #define FULL_TURN_READ 30873.0
 
-Leonidas::Leonidas(SoftwareSerial &serial, LiquidCrystal_I2C &lcd)
-    : Bot(serial, lcd), seek(SeekState(this)), face(FaceState(this)),
-    push(PushState(this)), angle(0), x(0), y(0),
-    calibrateAngle(CalibrateAngleState(this)), menu(MenuState(this)),
-    dummy(DummyState(this)), calibrateDistance(CalibrateDistanceState(this)),
-    squareSide(SquareSideState(this)), squareCorner(SquareCornerState(this))
+Leonidas::Leonidas(SoftwareSerial& serial, LiquidCrystal_I2C& lcd)
+	: Bot(serial, lcd), seek(SeekState(this)), face(FaceState(this)),
+	push(PushState(this)), angle(0), x(0), y(0),
+	calibrateAngle(CalibrateAngleState(this)), menu(MenuState(this)),
+	dummy(DummyState(this)), calibrateDistance(CalibrateDistanceState(this)),
+	squareSide(SquareSideState(this)), squareCorner(SquareCornerState(this)),
+	reface(ReFaceState(this)), goBack(GoBackState(this))
 {
 }
 

@@ -30,7 +30,7 @@ void PushState::update(unsigned long delta) {
     if (cliffs.cliffFrontLeft || cliffs.cliffFrontRight || cliffs.cliffLeft || cliffs.cliffRight) {
         bot->roomba.stop();
         Leonidas *leo = (Leonidas *)bot;
-        bot->setState(&leo->iddle);
+        bot->setState(&leo->reface);
     }
 }
 

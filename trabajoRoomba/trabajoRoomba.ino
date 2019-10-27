@@ -10,7 +10,7 @@
 #include "Roomba.hpp"
 #include "SerialUtils/SerialUtils.hpp"
 #include "sensorPack_t.hpp"
-#include "Odometry/Odometry.hpp"
+//#include "Odometry/Odometry.hpp"
 
 /*-----( Declare Constants )-----*/
 // Direccion I2C para PCF8574A (pantalla LCD)
@@ -20,7 +20,7 @@
 // Velocidad de 
 #define USB_BAUDRATE 9600
 
-#define DETECTIONS 3
+#define DETECTIONS 2
 
 #define  LED_OFF  0
 #define  LED_ON  1
@@ -28,7 +28,7 @@
 // Pines conectados al arduino para simular un puerto serie conectado al ROOMBA
 #define TX_ROOMBA_PIN 4
 #define RX_ROOMBA_PIN 3
-#define DETECTION_THRESHOLD 12000
+#define DETECTION_THRESHOLD 10000
 
 #define SAFE true
 #define FULL false
@@ -56,7 +56,7 @@ void play() {
 }
 
 // Sistema para gestionar la odometría
-Odometry odometry;
+//Odometry odometry;
 
 // Actualiza los valores de los contadores totales son los proporcionados por Roomba
 // para mantener un totalizado de movimientos y giros realizados.
@@ -65,7 +65,7 @@ void updateState(sensorPack_t reading, sensorPack_t* state) {
 	//! Se está escribiendo en reading los alores de state, cuando debería escribirse en state los valores del reading
 	// TODO Aquí hay que meter la lógica de almacenar la posición e ir calcuando la posición (x, y) actual; para poder volver al la posición inicial
 
-	odometry.update(reading);
+	//odometry.update(reading);
 
 	reading.encoderCountsLeft += state->encoderCountsLeft;
 	reading.encoderCountsRight += state->encoderCountsRight;
@@ -122,7 +122,7 @@ void turnDegree(
 	else {
 		myseruial.write(counterClockwise, 5);
 	}
-	delay(3033 - 350);
+	delay((3033/360) * degree);
 	stopMoving();
 	delay(1000);
 }
@@ -209,6 +209,7 @@ void pruebaAvances() {
 				lcd.print("Distancia");
 				lcd.setCursor(0, 1);
 				lcd.print(s.distance);
+
 			break;
 			
 			case 1:
@@ -311,7 +312,10 @@ enum strategy {
 	SEEK,  // Búsqueda de objetivo
 	FACE,  // Orientación del roomba
 	PUSH,  // Empuje de la botella fuera de la mesa
-	CENTER // Reubicación del robo la posición inicial // TODO Cambiar por volver a la posición inicial
+	CENTER, // Reubicación del robo la posición inicial // TODO Cambiar por volver a la posición inicial
+	REFACE,
+	GO_BACK,
+	FINISH
 };
 
 // Bucle infinito de ejecución de Arduino
@@ -320,8 +324,10 @@ void loop() {
 	byte clockwise[5] = { 137, 0, 25, 255, 255 };
 	static enum strategy phase = START;
 	static long double last_sensor_reading = millis(), last_lcd_update = millis();
-	static sensorPack_t state;
+	int16_t push_begining;
 	static byte detections = 0;
+	int16_t trip;
+
 
 	int i;
 
@@ -332,31 +338,8 @@ void loop() {
 
 	if ((millis() - last_lcd_update) > SENSOR_REFRESH_RATE) {
 		lcd.setCursor(0, 1);
-		lcd.print("                ");
-		lcd.setCursor(0, 1);
-		lcd.print(state.lightBumpRight);
-
+		lcd.print(state.distance);
 		last_lcd_update = millis();
-	}
-
-	if (state.cliffFrontLeft || state.cliffFrontRight || state.cliffLeft || state.cliffRight) {
-		stopMoving();
-		lcd.clear();
-		lcd.print("Que me caigo!");
-		lcd.setCursor(0, 1);
-		if (state.cliffFrontLeft) {
-			lcd.print("cliffFrontLeft");
-		}
-		if (state.cliffFrontRight) {
-			lcd.print("cliffFrontRight");
-		}
-		if (state.cliffLeft) {
-			lcd.print("cliffLeft");
-		}
-		if (state.cliffRight) {
-			lcd.print("cliffRight");
-		}
-		while (1);
 	}
 
 	switch (phase) {
@@ -403,19 +386,74 @@ void loop() {
 			delay(1000);
 		}
 		Serial.print("Encarando objetivo");
-		turnDegree(60, true);
+		turnDegree(330, true);
 		phase = PUSH;
 		updated = false;
 		break;
 
 	case PUSH:
+
 		if (!updated) {
 			lcd.clear();
-			lcd.print("Pushing");
+			lcd.print("Pushing: ");
+			lcd.print(state.distance);
+			delay(5000);
+			updated = !updated;
+			push_begining = state.distance;
+			drive(25, 0);
+		}
+		
+		if (state.cliffFrontLeft || state.cliffFrontRight || state.cliffLeft || state.cliffRight) {
+			stopMoving();
+			lcd.clear();
+			lcd.print("Que me caigo!");
+			lcd.setCursor(0, 1);
+			if (state.cliffFrontLeft) {
+				lcd.print("cliffFrontLeft");
+			}
+			if (state.cliffFrontRight) {
+				lcd.print("cliffFrontRight");
+			}
+			if (state.cliffLeft) {
+				lcd.print("cliffLeft");
+			}
+			if (state.cliffRight) {
+				lcd.print("cliffRight");
+			}
+			updated = !updated;
+			phase = REFACE;
+			
+		}
+
+		break;
+
+	case REFACE:
+		if (!updated) {
+			lcd.clear();
+			lcd.print("Refacing: ");
+			lcd.print(push_begining);
+			lcd.setCursor(0, 1);
+			lcd.print(state.distance);
+			delay(10000);
+			turnDegree(180, true);
+			drive(25, 0);
 			updated = !updated;
 		}
-		drive(25, 0);
-		///delay(2000);
+
+		if ((state.distance - push_begining)  > trip) {
+			stopMoving();
+			phase = FINISH;
+		}
+
+		break;
+
+	case FINISH:
+		lcd.clear();
+		lcd.print("Finished");
+		while (1);
+		break;
+
+	default:
 		break;
 
 	}

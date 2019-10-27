@@ -83,3 +83,23 @@ void Roomba::turnDegree(float angle, int16_t velocity) {
     delay((angle / 360.0) * (FULL_TURN_TIME));
     stop();
 }
+
+
+
+/**
+ * Sets the raw digit segment data.
+ * digit1: Bits for first digit.
+ * digit2: Bits for second digit.
+ * digit3: Bits for third digit.
+ * digit4: Bits for fourth digit.
+ */
+void Roomba::setDigitsRaw(uint8_t digit1, uint8_t digit2, uint8_t digit3,\
+    uint8_t digit4)
+{
+    uint8_t operands[4];
+    operands[0] = digit1;
+    operands[1] = digit2;
+    operands[2] = digit3;
+    operands[3] = digit4;
+    send(Opcode::DIGIT_LEDS_RAW, operands, 4);
+}

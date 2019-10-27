@@ -170,6 +170,17 @@ public:
 
 
     /**
+     * Sets the raw digit segment data.
+     * digit1: Bits for first digit.
+     * digit2: Bits for second digit.
+     * digit3: Bits for third digit.
+     * digit4: Bits for fourth digit.
+     */
+    void setDigitsRaw(uint8_t digit1, uint8_t digit2, uint8_t digit3,\
+        uint8_t digit4);
+
+
+    /**
      * Reads the angle the roomba has turned.
      * returns the angle.
      */
@@ -300,6 +311,26 @@ public:
      */
     inline void getCliffs(CliffSensors *output) {
         querySensor<CliffSensors>(Sensor::CLIFFS, output);
+    }
+
+
+
+    /**
+     * Reads buttons.
+     * returns a bit mask with Buttons bytes activated.
+     */
+    inline uint8_t getButtons() {
+        return querySensor<uint8_t>(Sensor::BUTTONS);
+    }
+
+
+
+    /**
+     * Reads the wall signal.
+     * returns the wall signal.
+     */
+    inline uint16_t getWallSignal() {
+        return querySensor<uint16_t>(Sensor::WALL_SIGNAL);
     }
 
 };

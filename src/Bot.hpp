@@ -3,6 +3,7 @@
 #include "Roomba.hpp"
 #include "State/State.hpp"
 #include "State/IddleState.hpp"
+#include "Odometry.hpp"
 
 #include <LiquidCrystal_I2C.h>
 
@@ -33,6 +34,11 @@ public:
      * LCD.
      */
     LiquidCrystal_I2C &lcd;
+
+    /**
+     * Odometry.
+     */
+    Odometry odometry;
 
     /**
      * Bot constructor.

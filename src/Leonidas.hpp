@@ -6,6 +6,12 @@
 #include "State/FaceState.hpp"
 #include "State/SeekState.hpp"
 #include "State/PushState.hpp"
+#include "State/CalibrateAngleState.hpp"
+#include "State/CalibrateDistanceState.hpp"
+#include "State/MenuState.hpp"
+#include "State/DummyState.hpp"
+#include "State/SquareSideState.hpp"
+#include "State/SquareCornerState.hpp"
 
 #include <LiquidCrystal_I2C.h>
 
@@ -13,6 +19,8 @@
  * Leonidas bot.
  */
 class Leonidas : public Bot {
+private:
+    unsigned long lastRead;
 public:
     /**
      * Searching state.
@@ -28,6 +36,33 @@ public:
      * Facing state.
      */
     PushState push;
+
+    CalibrateAngleState calibrateAngle;
+
+    MenuState menu;
+
+    DummyState dummy;
+
+    CalibrateDistanceState calibrateDistance;
+
+    SquareSideState squareSide;
+
+    SquareCornerState squareCorner;
+
+    /**
+     * Rotation angle.
+     */
+    double angle;
+
+    /**
+     * X coordinate.
+     */
+    double x;
+
+    /**
+     * Y coordinate.
+     */
+    double y;
 
     /**
      * Leonidas constructor.

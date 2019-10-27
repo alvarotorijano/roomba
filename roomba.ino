@@ -15,7 +15,7 @@
 #define I2C_ADDR    0x27  // Direccion I2C para PCF8574A que es el que lleva nuestra placa dise�ada por MJKDZ
 //definimos las constantes para esta placa
 
-#define USB_BAUDRATE 9600
+#define USB_BAUDRATE 9600 
 
 #define  LED_OFF  0
 #define  LED_ON  1

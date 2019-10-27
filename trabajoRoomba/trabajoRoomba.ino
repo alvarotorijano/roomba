@@ -190,18 +190,20 @@ void readSensors(sensorPack_t* data) {
 */
 
 void pruebaAvances() {  
-	lcd.print("caminando 10 segundos: ");
+	lcd.clear();
+	lcd.print("MODO PRUEBA");
 	delay(1000);
 
 
 	drive(50, 1);
-	delay(10000);
+	delay(13900 / 2);
 	stopMoving();
 
 	
 	lcd.setCursor(0, 0);
 	lcd.print("Leyendo sensores");
 	sensorPack_t s = readSensors();
+	updateState(s, &state);
 	lcd.setCursor(0, 1);
 
 	for (int i = 200 - 1; i >= 0; i--)
@@ -243,7 +245,7 @@ void pruebaAvances() {
 			default:
 			break;
 		}
-		delay(20000);
+		delay(2000);
 		lcd.clear();
 	}
 	
@@ -260,6 +262,8 @@ void setup() {
 	Serial.begin(USB_BAUDRATE);
 	myseruial.begin(115200);
 
+	memset(&state, 0, sizeof(sensorPack_t));
+
 	roombaInit(FULL);
 	stopMoving();
 
@@ -275,7 +279,7 @@ void setup() {
 	lcd.setCursor(0, 0);
 	lcd.print("  Leonidas Bot");
 
-	memset(&state, 0, sizeof(sensorPack_t));
+	
 
 	delay(100);
 	play();
@@ -287,7 +291,7 @@ void setup() {
 	state = readSensors(); //reset senswor readings
 	//showSensors(state);
 
-	// pruebaAvances();
+	pruebaAvances();
 
 	lcd.clear();
 	lcd.setCursor(0, 0);
@@ -438,11 +442,11 @@ void updateLCDwithOdometry() {
 	lcd.print("X");
 	lcd.print(odometry.positionX); 
 	
-	lcd.print("Y");
+	lcd.print(" Y");
 	lcd.print(odometry.positionY);
 
 	lcd.setCursor(0, 1);
 
-	lcd.print(odometry.angle);
-	lcd.print("º");
+	lcd.print("O: ");
+	lcd.print(odometry.angleOriginal);
 }

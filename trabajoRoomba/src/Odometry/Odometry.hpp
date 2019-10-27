@@ -26,6 +26,8 @@ public:
     // Ángulo en grados que indica cuánto se ha girado desde el inicio
     double angle;
 
+    double angleOriginal;
+
 
     // Actualiza los datos internos de la posición a través de los sensores de Roomba
     void update(sensorPack_t sensor);
@@ -35,7 +37,7 @@ private:
     double degreesToRadians(double degrees);
     double roombaAngleToDegrees(double angle);
     double degreesToRoombaAngle(double degrees);
-    
+    double roombaDistanceToCm(double roombaDistance);
 };
 
 

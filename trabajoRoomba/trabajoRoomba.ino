@@ -195,8 +195,8 @@ void pruebaAvances() {
 	delay(1000);
 
 
-	drive(50, 1);
-	delay(13900 / 2);
+	drive(200, -1);
+	delay(6950 * 1.23); // Giro un poco aleatorio
 	stopMoving();
 
 	
@@ -266,6 +266,7 @@ void setup() {
 
 	roombaInit(FULL);
 	stopMoving();
+	readSensors(); //reset senswor readings
 
 	Serial.println("Leonidas bot");
 	lcd.begin(16, 2); // inicializar lcd
@@ -279,7 +280,8 @@ void setup() {
 	lcd.setCursor(0, 0);
 	lcd.print("  Leonidas Bot");
 
-	
+	pruebaAvances();
+
 
 	delay(100);
 	play();
@@ -290,8 +292,6 @@ void setup() {
 	delay(2000);
 	state = readSensors(); //reset senswor readings
 	//showSensors(state);
-
-	pruebaAvances();
 
 	lcd.clear();
 	lcd.setCursor(0, 0);
@@ -439,11 +439,15 @@ void loop() {
 // Actualiza la pantalla con datos de odometría
 void updateLCDwithOdometry() {
 	lcd.clear();
-	lcd.print("X");
-	lcd.print(odometry.positionX); 
+	// lcd.print("X");
+	// lcd.print(odometry.positionX); 
 	
-	lcd.print(" Y");
-	lcd.print(odometry.positionY);
+	// lcd.print(" Y");
+	// lcd.print(odometry.positionY);
+
+
+	lcd.print("G: ");
+	lcd.print(odometry.angle);
 
 	lcd.setCursor(0, 1);
 

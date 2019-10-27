@@ -5,11 +5,18 @@
 #define FULL_TURN_READ 30873.0
 
 Leonidas::Leonidas(SoftwareSerial &serial, LiquidCrystal_I2C &lcd)
-    : Bot(serial, lcd), seek(SeekState(this)), face(FaceState(this)),
-    push(PushState(this)), angle(0), x(0), y(0),
-    calibrateAngle(CalibrateAngleState(this)), menu(MenuState(this)),
-    dummy(DummyState(this)), calibrateDistance(CalibrateDistanceState(this)),
-    squareSide(SquareSideState(this)), squareCorner(SquareCornerState(this))
+    :   
+        Bot(serial, lcd), 
+        seek(SeekState(this)), 
+        face(FaceState(this)),
+        push(PushState(this)), 
+        angle(0), x(0), y(0),
+        calibrateAngle(CalibrateAngleState(this)), 
+        menu(MenuState(this)),
+        dummy(DummyState(this)),
+        calibrateDistance(CalibrateDistanceState(this)),
+        squareSide(SquareSideState(this)),
+        squareCorner(SquareCornerState(this))
 {
 }
 
@@ -20,10 +27,10 @@ void Leonidas::start() {
     roomba.stop();
     // Hacemos que las luces parpadeen para asegurarnos que funciona.
     for (int i = 0; i < 2; i++) {
-        byte ledInfo1[3] = {0X0F, 0x00, 0x00};
+        byte ledInfo1[3] = {0x0F, 0x00, 0x00};
         roomba.send(Opcode::LEDS, ledInfo1, 3);
         delay(500);
-        byte ledInfo2[3] = {0X0F, 0x80, 0xFF};
+        byte ledInfo2[3] = {0x0F, 0x80, 0xFF};
         roomba.send(Opcode::LEDS, ledInfo2, 3);
         delay(500);
     }

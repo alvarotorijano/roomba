@@ -12,6 +12,8 @@
 #include "State/DummyState.hpp"
 #include "State/SquareSideState.hpp"
 #include "State/SquareCornerState.hpp"
+#include "State/ReFaceState.hpp"
+#include "State/GoBackState.hpp"
 
 #include <LiquidCrystal_I2C.h>
 
@@ -33,9 +35,16 @@ public:
     FaceState face;
 
     /**
-     * Facing state.
+     * Push state.
      */
     PushState push;
+
+	/**
+	 * ReFacing state.
+	 */
+	ReFaceState reface;
+
+	GoBackState goBack;
 
     CalibrateAngleState calibrateAngle;
 

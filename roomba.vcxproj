@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C5F80730-F44F-4478-BDAE-6634EFC2CA88}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectName>roomba</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\roomba;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.1\libraries\SoftwareSerial\src;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.1\libraries\Wire\src;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.1\libraries\Wire\src\utility;C:\Users\The_menda14\Documents\Arduino\libraries\Newliquidcrystal_1.3.5;C:\Users\The_menda14\Documents\Arduino\libraries\Newliquidcrystal_1.3.5\utility;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.1\cores\arduino;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.1\variants\eightanaloginputs;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\avr\include\avr;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.2\include;C:\Users\The_menda14\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)__vm\.roomba.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PreprocessorDefinitions>__AVR_atmega328p__;__AVR_ATmega328P__;__AVR_ATmega328p__;F_CPU=16000000L;ARDUINO=108010;ARDUINO_AVR_NANO;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="VisualMicro" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="roomba.ino">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\FastIO.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\I2CIO.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LCD.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_I2C.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_I2C_ByVac.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SI2C.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR1W.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR2W.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR3W.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\SI2CIO.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\SoftI2CMaster.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\thirdparty libraries\SoftI2CMaster\examples\TSL2561Soft\TSL2561Soft.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\thirdparty libraries\SoftI2CMaster\SoftI2CMaster.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\thirdparty libraries\SoftI2CMaster_\SoftI2CMaster.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\thirdparty libraries\TinyWireM\TinyWireM.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="libs\NewLiquidCrystal_lib\thirdparty libraries\TinyWireM\USI_TWI_Master.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\Bot.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\Leonidas.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\Odometry.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\Buttons.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\ChargingState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\DigitNBits.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\BatterySensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\CliffSensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\CliffSignalSensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\CurrentSensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\FeedbackSensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group0Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group100Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group101Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group106Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group107Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group1Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group2Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group3Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group4Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group5Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Group6Packet.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\LightBumpSignalSensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\PositionSensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\GroupPackets\Sensors.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\LightBumper.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\Opcode.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\OpenInterface\Sensor.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\Roomba.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\SerialUtils\SerialUtils.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\CalibrateAngleState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\CalibrateDistanceState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\DummyState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\FaceState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\IddleState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\MenuState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\PushState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\SeekState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\SquareCornerState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\SquareSideState.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="src\State\State.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="__vm\.roomba.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libs\NewLiquidCrystal_lib\FastIO.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\I2CIO.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LCD.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_I2C.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_I2C_ByVac.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SI2C.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR1W.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR2W.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\LiquidCrystal_SR3W.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\SI2CIO.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\thirdparty libraries\SoftI2CMaster_\SoftI2CMaster.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\thirdparty libraries\TinyWireM\TinyWireM.cpp" />
+    <ClCompile Include="libs\NewLiquidCrystal_lib\thirdparty libraries\TinyWireM\USI_TWI_Master.cpp" />
+    <ClCompile Include="src\Bot.cpp" />
+    <ClCompile Include="src\Leonidas.cpp" />
+    <ClCompile Include="src\Odometry.cpp" />
+    <ClCompile Include="src\Roomba.cpp" />
+    <ClCompile Include="src\SerialUtils\SerialUtils.cpp" />
+    <ClCompile Include="src\State\CalibrateAngleState.cpp" />
+    <ClCompile Include="src\State\CalibrateDistanceState.cpp" />
+    <ClCompile Include="src\State\DummyState.cpp" />
+    <ClCompile Include="src\State\FaceState.cpp" />
+    <ClCompile Include="src\State\IddleState.cpp" />
+    <ClCompile Include="src\State\MenuState.cpp" />
+    <ClCompile Include="src\State\PushState.cpp" />
+    <ClCompile Include="src\State\SeekState.cpp" />
+    <ClCompile Include="src\State\SquareCornerState.cpp" />
+    <ClCompile Include="src\State\SquareSideState.cpp" />
+    <ClCompile Include="src\State\State.cpp" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
